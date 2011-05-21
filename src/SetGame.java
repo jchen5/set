@@ -38,7 +38,7 @@ public class SetGame extends JApplet implements ActionListener{
 	}
 	
 	public void start(){		
-		/*for(int col = 0; col < 3; ++col){
+		for(int col = 0; col < 3; ++col){
 			//deck.push(new SetCard(col, 0, 0, 0, this));
 			for(int shp = 0; shp < 3; ++shp){
 				for(int shd = 0; shd < 3; ++shd){
@@ -47,10 +47,10 @@ public class SetGame extends JApplet implements ActionListener{
 					}
 				}
 			}
-		}*/
-		for(int i = 0; i < 15; ++i){
-			deck.add(new SetCard(0,0,0,0, this));
 		}
+		/*for(int i = 0; i < 15; ++i){
+			deck.add(new SetCard(0,0,0,0, this));
+		}*/
 		Collections.shuffle(deck);
 		
 		gp = new SetGamePanel();
