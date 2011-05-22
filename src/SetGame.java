@@ -9,7 +9,7 @@ public class SetGame extends JApplet implements ActionListener{
 	public static final int CARD_MARGIN = 7;
 	public static final int EAST_WIDTH = 200, NORTH_HEIGHT = 75, SOUTH_HEIGHT = 50;
 	public static final String font = "Comic Sans";
-	public static final String version = "2.0";
+	public static final String version = "2.1";
 	
 	public static void main(String[] args){
 		SetGame s = new SetGame();
@@ -24,7 +24,7 @@ public class SetGame extends JApplet implements ActionListener{
 	
 	public void init(){
 		setPreferredSize(new Dimension(3 * (SetCard.PIC_WIDTH + 2 * SetCard.BORDER_WIDTH) + 4 * CARD_MARGIN + EAST_WIDTH,
-				7 * (SetCard.PIC_HEIGHT + 2 * SetCard.BORDER_WIDTH) + 8 * CARD_MARGIN + NORTH_HEIGHT));
+				7 * (SetCard.PIC_HEIGHT + 2 * SetCard.BORDER_WIDTH) + 8 * CARD_MARGIN + NORTH_HEIGHT + SOUTH_HEIGHT));
 		setLayout(new BorderLayout());
 	}
 	
@@ -48,9 +48,10 @@ public class SetGame extends JApplet implements ActionListener{
 				}
 			}
 		}
-		/*for(int i = 0; i < 15; ++i){
+		/*for(int i = 0; i < 14; ++i){
 			deck.add(new SetCard(0,0,0,0, this));
-		}*/
+		}
+		deck.add(new SetCard(0,0,0,1, this));*/
 		Collections.shuffle(deck);
 		
 		gp = new SetGamePanel();
@@ -101,6 +102,10 @@ public class SetGame extends JApplet implements ActionListener{
 	private void restartGame(){
 		message.setText("Congratulations!  You finished in " + tl.getTime() + " seconds!");
 		
+		while(!deck.empty()){
+			savedCards.push(deck.pop());
+		}
+		gp.removeAll();
 		deck = savedCards;
 		savedCards = new Stack<SetCard>();
 		Collections.shuffle(deck);
