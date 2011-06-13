@@ -30,5 +30,19 @@ public class SetCardList extends ArrayList<SetCard>{
 		return isSet(get(0), get(1), get(2));
 	}
 	
+	public boolean equals(Object o){
+		SetCardList other;
+		try{
+			other = (SetCardList) o;
+		}
+		catch(Exception e){
+			return false;
+		}
+		for(SetCard card : this){
+			if(!other.contains(card)) return false;
+		}
+		return true;
+	}
+	
 	//SetGameGrid grid;
 }
