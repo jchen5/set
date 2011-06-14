@@ -28,17 +28,16 @@ public class SetClassicPanel extends SetPanel{
 	}
 	
 	private void loadStandardDeck(){
-		for(int i = 1; i <= 81; ++i){
-			//goddam 1-indexed gif files
+		for(int i = 0; i < 81; ++i){
 			deck.add(new SetCard(i, cl));
 		}
 	}
 	
 	private void loadTestingDeck(){
 		for(int i = 0; i < 14; ++i){
-			deck.add(new SetCard(1, cl));
+			deck.add(new SetCard(0, cl));
 		}
-		deck.add(new SetCard(2, cl));	
+		deck.add(new SetCard(1, cl));	
 	}
 	
 	public void specStart(){

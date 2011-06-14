@@ -13,22 +13,24 @@ public class MenuPanel extends JPanel implements ActionListener, KeyListener {
 	
 	public MenuPanel(SetGame parent){
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		addKeyListener(this);
 		
 		this.parent = parent;
 		
-		add(Box.createRigidArea(new Dimension(0, GAP)));
-		
-		classic = new MenuButton("Classic Mode (" + (char)(buttons.size() + 'A') + ")");
-		classic.addActionListener(this);
+		classic = new MenuButton("Classic Mode", buttons.size());
 		buttons.add(classic);
-		add(classic);
+
+		genPuzzle = new MenuButton("Puzzle Mode", buttons.size());
+		buttons.add(genPuzzle);
 		
-		add(Box.createRigidArea(new Dimension(0, GAP)));
-		
-		dailyPuzzle = new MenuButton("Play Set Daily Puzzle (" + (char)(buttons.size() + 'A') + ")");
-		dailyPuzzle.addActionListener(this);
+		dailyPuzzle = new MenuButton("Play Set Daily Puzzle", buttons.size());
 		buttons.add(dailyPuzzle);
-		add(dailyPuzzle);
+		
+		for(MenuButton mb : buttons){
+			add(Box.createRigidArea(new Dimension(0, GAP)));
+			mb.addActionListener(this);
+			add(mb);
+		}
 	}
 
 	public void actionPerformed(ActionEvent e) {

@@ -17,12 +17,23 @@ public class SetCardList extends ArrayList<SetCard>{
 		card.setChosen(!card.getChosen());
 	}
 	
-	public static boolean isSet(SetCard one, SetCard two, SetCard three){
-		for(int f = 0; f < 4; ++f){
-			int sum = one.getFeature(f) + two.getFeature(f) + three.getFeature(f);
-			if(sum % 3 != 0) return false;
+	public static int getThird(int one, int two){
+		int ret = 0;
+		for(int mask = 1; mask < 81; mask *= 3){
+			ret += ((2 * 81 - one/mask - two/mask) %3) * mask;
+		}
+		return ret;
+	}
+	
+	public static boolean isSet(int one, int two, int three){
+		for(int mask = 1; mask < 81; mask *= 3){
+			if(((one / mask) + (two / mask) + (three / mask)) % 3 != 0) return false;
 		}
 		return true;
+	}
+	
+	public static boolean isSet(SetCard one, SetCard two, SetCard three){
+		return isSet(one.getMod(), two.getMod(), three.getMod());
 	}
 	
 	public boolean isSet(){

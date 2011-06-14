@@ -1,17 +1,18 @@
 import java.awt.Dimension;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Scanner;
 import javax.swing.*;
 
 public class SetPuzzlePanel extends SetPanel {
 	public static final int TOTAL_SETS = 6;
+	public static final int TOTAL_CARDS = 12;
 	public static final String flag = "initSetCards";
 	
 	public SetPuzzlePanel(SetGame parent, boolean daily){
@@ -33,7 +34,7 @@ public class SetPuzzlePanel extends SetPanel {
 					s.useDelimiter("[, (]++");
 					s.skip(".*" + flag);
 					for(int i = 0; i < 12; ++i){
-						int nextCard = s.nextInt();
+						int nextCard = s.nextInt() - 1;
 						cards.add(new SetCard(nextCard, cl));
 					}
 					return true;
@@ -43,9 +44,32 @@ public class SetPuzzlePanel extends SetPanel {
 		catch (Exception e) {}
 		return false;
 	}
-	
-	private void generatePuzzle(){
 		
+	private void generatePuzzle(){
+		ArrayList<Integer> nums = new ArrayList<Integer>();
+		for(int i = 0; i < 81; ++i){
+			//note the zero-indexing for modular arithmetic's sake
+			nums.add(i);
+		}
+		while(true){
+			Collections.shuffle(nums);
+			int numSets = 0;
+			HashSet<Integer> lookupTable = new HashSet<Integer>();
+			for(int i = 0; i < TOTAL_CARDS; ++i){
+				lookupTable.add(nums.get(i));
+			}
+			for(int i = 0; i < TOTAL_CARDS; ++i){
+				for(int j = 0; j < i; ++j){
+					if(lookupTable.contains(SetCardList.getThird(nums.get(i), nums.get(j)))) ++numSets;
+				}
+			}
+			numSets /= 3; //overcounts by a factor of 3
+			if(numSets == TOTAL_SETS) break;
+		}
+		cards = new ArrayList<SetCard>();
+		for(int i = 0; i < TOTAL_CARDS; ++i){
+			cards.add(new SetCard(nums.get(i), cl));
+		}
 	}
 	
 	private void layoutStartingCards(){

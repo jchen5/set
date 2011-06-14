@@ -19,7 +19,7 @@ public class SetCard extends JButton{
 	public static final int LETTER_SIZE = 12;
 	
 	public SetCard(int card, ActionListener l){
-		String file = "/cards/" + String.format("%02d", card) + ".gif";
+		String file = "/cards/" + String.format("%02d", card + 1) + ".gif";
 		try {
 			//System.out.println(SetCard.class.getResourceAsStream(file));
 			//System.out.println(SetCard.class.getResourceAsStream("SetCard.class"));
@@ -28,12 +28,7 @@ public class SetCard extends JButton{
 			setText("Oops");
 		}
 		
-		card--; //look what you've done, 1-indexing
-		features = new int[4];
-		features[0] = card % 3;
-		features[1] = (card / 3) % 3;
-		features[2] = (card / 9) % 3;
-		features[3] = (card / 27) % 3;
+		modNumber = card; //look what you've done, 1-indexing
 		addActionListener(l);
 		chosen = false;
 		//setBorder(new BasicBorders.ButtonBorder(Color.BLACK, Color.BLACK, Color.BLACK, Color.BLACK));
@@ -46,6 +41,10 @@ public class SetCard extends JButton{
 	
 	public void setLetter(char l){
 		letter = l;
+	}
+	
+	public int getMod(){
+		return modNumber;
 	}
 	
 	public void paintComponent(Graphics g){
@@ -68,11 +67,7 @@ public class SetCard extends JButton{
 		}
 	}
 	
-	public int getFeature(int which){
-		return features[which];
-	}
-	
-	int[] features;
+	int modNumber;
 	boolean chosen = false;
 	char letter;
 }

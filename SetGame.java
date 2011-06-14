@@ -13,7 +13,7 @@ public class SetGame extends JApplet {
 	public static final int CARD_MARGIN = 7;
 	public static final int EAST_WIDTH = 200, NORTH_HEIGHT = 75, SOUTH_HEIGHT = 50;
 	public static final String FONT = "Comic Sans";
-	public static final String VERSION = "3.0";
+	public static final String VERSION = "3.1";
 	public static final Color BACKGROUND = new Color(200, 100, 200);
 	
 	public static void main(String[] args){
@@ -83,7 +83,6 @@ public class SetGame extends JApplet {
 	
 	public void start(){
 		menu.setFocusable(true);
-		menu.addKeyListener(menu);
 		menu.requestFocusInWindow();
 	}
 	
