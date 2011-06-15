@@ -31,6 +31,7 @@ public class SetGame extends JApplet {
 	public void init(){
 		setPreferredSize(new Dimension(3 * (SetCard.PIC_WIDTH + 2 * SetCard.BORDER_WIDTH) + 4 * CARD_MARGIN + EAST_WIDTH,
 				7 * (SetCard.PIC_HEIGHT + 2 * SetCard.BORDER_WIDTH) + 8 * CARD_MARGIN + NORTH_HEIGHT + SOUTH_HEIGHT));
+		System.out.println(getPreferredSize());
 		setLayout(new BorderLayout());
 		setFocusable(false);
 		
