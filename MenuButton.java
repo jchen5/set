@@ -6,7 +6,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 	
 public class MenuButton extends JButton{
-	public static final int DEFAULT_SIZE = 28;
+	public static final int DEFAULT_SIZE = 24;
 	public static final int DEFAULT_WIDTH = 300;
 	public static final int MARGIN = 5;
 

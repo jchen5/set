@@ -21,8 +21,12 @@ import javax.swing.JLabel;
 			return time * TIMER_DELAY / 1000;
 		}
 		
+		public static String makeTimeString(int secs){
+			return secs/60 + ":" + String.format("%02d", (secs % 60));
+		}
+		
 		public String getTimeString(){
-			return time * TIMER_DELAY /(60 * 1000) + ":" + String.format("%02d", (time * TIMER_DELAY/1000) % 60);
+			return makeTimeString(getSeconds());
 		}
 		
 		public String congrats(){

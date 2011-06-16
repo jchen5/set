@@ -102,6 +102,7 @@ public class SetPuzzlePanel extends SetPanel {
 	}
 
 	private void showFound(SetCardList set){
+		Collections.sort(set); //arranges in order of number, nothing else
 		eastPanel.add(Box.createRigidArea(new Dimension(0, FoundPanel.GAP)));
 		eastPanel.add(new FoundPanel(set));
 		validate();
@@ -119,7 +120,7 @@ public class SetPuzzlePanel extends SetPanel {
 				showFound(selected);
 				if(foundSets.size() == TOTAL_SETS){
 					timer.stop();
-					parent.endGame(tl);
+					parent.endGame(tl, null);
 					//end game
 				}
 				else{

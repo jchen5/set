@@ -22,7 +22,7 @@ public class SetClassicPanel extends SetPanel{
 		for(int i = 0; i < 12; ++i){
 			SetCard sc = deck.pop();
 			gp.add(sc);
-			savedCards.add(sc);
+			//savedCards.add(sc);
 		}
 		gp.updateSize();
 	}
@@ -41,10 +41,12 @@ public class SetClassicPanel extends SetPanel{
 	}
 	
 	public void specStart(){
-		loadStandardDeck();
-		//loadTestingDeck();
+		//loadStandardDeck();
+		loadTestingDeck();
 		
 		Collections.shuffle(deck);
+		lastCard = deck.get(0);
+		lastCard.setFlipped(true);
 		layStartingCards();
 		
 		addCards = new JButton("Can I Haz Cards? (" + (char)(CardListener.MORE_CARDS - 'a' + 'A') + ")");
@@ -63,7 +65,7 @@ public class SetClassicPanel extends SetPanel{
 		timer.start();
 	}
 	
-	private void restartGame(){
+	/*private void restartGame(){
 		message.setText(tl.congrats());
 		
 		while(!deck.empty()){
@@ -79,6 +81,23 @@ public class SetClassicPanel extends SetPanel{
 		
 		tl.reset();
 		timer.restart();
+	}*/
+
+	
+	
+	private void endGame(){		
+		if(Arrays.asList(gp.getComponents()).contains(lastCard)){
+			ArrayList<Component> comps = new ArrayList<Component>();
+			comps.add(new CongratsLabel("The Turned-Over Card Was:"));
+			comps.add(Box.createRigidArea(new Dimension(0, 10)));
+			JLabel lastCardLabel = new JLabel(lastCard.icon);
+			lastCardLabel.setAlignmentX(CENTER_ALIGNMENT);
+			comps.add(lastCardLabel);
+			parent.endGame(tl, comps);
+		}
+		else{
+			parent.endGame(tl, null);
+		}
 	}
 	
 	private void updateNumCards(){
@@ -101,7 +120,7 @@ public class SetClassicPanel extends SetPanel{
 					else{
 						SetCard sc = deck.pop();
 						gp.add(sc, i);
-						savedCards.push(sc);
+						//savedCards.push(sc);
 					}
 				}
 			}
@@ -110,7 +129,7 @@ public class SetClassicPanel extends SetPanel{
 			}
 			if(gp.getComponentCount() > 0) message.setText("Set!");
 			//else restartGame();
-			else parent.endGame(tl);
+			else endGame();
 		}
 		else{
 			message.setText("You fail.  That's not a set.");
@@ -129,7 +148,7 @@ public class SetClassicPanel extends SetPanel{
 					message.setText("You fail. There's still a set here.");
 				}
 				else{
-					parent.endGame(tl);
+					endGame();
 				}
 				return;
 			}
@@ -140,7 +159,7 @@ public class SetClassicPanel extends SetPanel{
 			for(int i = 0; i < 3; ++i){
 				SetCard sc = deck.pop();
 				gp.add(sc);
-				savedCards.push(sc);
+				//savedCards.push(sc);
 			}
 			message.setText("Three Cards Added.");
 			updateNumCards();
@@ -150,7 +169,8 @@ public class SetClassicPanel extends SetPanel{
 	}
 	
 	Stack<SetCard> deck = new Stack<SetCard>();
-	Stack<SetCard> savedCards = new Stack<SetCard>();
+	//Stack<SetCard> savedCards = new Stack<SetCard>();
+	SetCard lastCard;
 	SetCardList selected = new SetCardList();
 	JButton addCards;
 	JLabel cardsLeft;
