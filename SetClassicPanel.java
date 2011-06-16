@@ -41,8 +41,8 @@ public class SetClassicPanel extends SetPanel{
 	}
 	
 	public void specStart(){
-		//loadStandardDeck();
-		loadTestingDeck();
+		loadStandardDeck();
+		//loadTestingDeck();
 		
 		Collections.shuffle(deck);
 		lastCard = deck.get(0);
