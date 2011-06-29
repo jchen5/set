@@ -5,19 +5,24 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Scanner;
+import java.util.TimeZone;
+
 import javax.swing.*;
 
 public class SetPuzzlePanel extends SetPanel {
 	public static final int TOTAL_SETS = 6;
 	public static final int TOTAL_CARDS = 12;
+	public static final int RANDOM = 0, OFFICIAL = 1, MY_DAILY = 2;
 	public static final String flag = "initSetCards";
 	
-	public SetPuzzlePanel(SetGame parent, boolean daily){
+	public SetPuzzlePanel(SetGame parent, int type){
 		super(parent);
-		this.daily = daily;
+		this.type = type;
 	}
 
 	private boolean grabDailyPuzzle(){
@@ -45,14 +50,14 @@ public class SetPuzzlePanel extends SetPanel {
 		return false;
 	}
 		
-	private void generatePuzzle(){
+	private void generatePuzzle(Random rand){
 		ArrayList<Integer> nums = new ArrayList<Integer>();
 		for(int i = 0; i < 81; ++i){
 			//note the zero-indexing for modular arithmetic's sake
 			nums.add(i);
 		}
 		while(true){
-			Collections.shuffle(nums);
+			Collections.shuffle(nums, rand);
 			int numSets = 0;
 			HashSet<Integer> lookupTable = new HashSet<Integer>();
 			for(int i = 0; i < TOTAL_CARDS; ++i){
@@ -72,13 +77,28 @@ public class SetPuzzlePanel extends SetPanel {
 		}
 	}
 	
+	private void generateRandom(){
+		generatePuzzle(new Random());
+	}
+	
+	private int makeDateSeed(){
+		Calendar now = Calendar.getInstance(TimeZone.getTimeZone("America/Chicago"));
+		//System.out.println(now.getTime());
+		int prime = 314159; //win
+		return now.get(Calendar.DAY_OF_YEAR) * prime + now.get(Calendar.YEAR);
+	}
+	
+	private void generateDaily(){
+		generatePuzzle(new Random(makeDateSeed()));
+	}
+	
 	private void layoutStartingCards(){
 		for(int i = 0; i < cards.size(); ++i){
 			gp.add(cards.get(i));
 		}
 		gp.updateSize();
 	}
-	
+		
 	public void specStart() {
 		eastPanel.add(pause);
 		
@@ -88,15 +108,21 @@ public class SetPuzzlePanel extends SetPanel {
 		eastPanel.add(timeLabel);
 		eastPanel.add(new EastLabel("Found So Far:"));
 		
-		if(daily){
+		switch(type){
+		case RANDOM:
+			generateRandom();
+			break;
+		case OFFICIAL:
 			if(!grabDailyPuzzle()){
 				message.setText("Unable to acquire Daily Puzzle: Please Check your Internet Connection.");
 				return;
 			}
+			break;
+		case MY_DAILY:
+			generateDaily();
+			break;
 		}
-		else{
-			generatePuzzle();
-		}
+
 		layoutStartingCards();
 		timer.start();
 	}
@@ -151,5 +177,5 @@ public class SetPuzzlePanel extends SetPanel {
 	ArrayList<SetCard> cards;
 	ArrayList<SetCardList> foundSets = new ArrayList<SetCardList>();
 	JLabel setsLeft;
-	boolean daily;
+	int type;
 }
