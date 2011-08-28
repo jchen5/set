@@ -17,7 +17,7 @@ import javax.swing.*;
 public class SetPuzzlePanel extends SetPanel {
 	public static final int TOTAL_SETS = 6;
 	public static final int TOTAL_CARDS = 12;
-	public static final int RANDOM = 0, OFFICIAL = 1, MY_DAILY = 2;
+	public static final int RANDOM = 0, OFFICIAL = 1, MY_DAILY = 2, ARCHIVES = 3;
 	public static final String flag = "initSetCards";
 	
 	public SetPuzzlePanel(SetGame parent, int type){
@@ -25,10 +25,12 @@ public class SetPuzzlePanel extends SetPanel {
 		this.type = type;
 	}
 
-	private boolean grabDailyPuzzle(){
-		URL site;
+	public void setDailyPuzzleArchivesDate(String date) {
+		dailyPuzzleArchivesDate = date;
+	}
+
+	private boolean grabDailyPuzzle(URL site){
 		try {
-			site = new URL("http://www.setgame.com/puzzle/set.htm");
 			URLConnection conn = site.openConnection();
 			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 			String line;
@@ -45,9 +47,28 @@ public class SetPuzzlePanel extends SetPanel {
 					return true;
 				}
 			}
-		} 
-		catch (Exception e) {}
+		}
+		catch (java.io.IOException ex) {
+			System.err.println("Error downloading Daily Puzzle: " + ex);
+		}
 		return false;
+	}
+
+	private URL createURL(String spec) {
+		try {
+			return new URL(spec);
+		}
+		catch (java.net.MalformedURLException ex)
+		{
+			System.err.println("Unexpected error creating URL from input string: " + spec);
+			ex.printStackTrace();
+			System.exit(1);
+			return null;
+		}
+	}
+	
+	private boolean grabDailyPuzzle(){
+		return grabDailyPuzzle(createURL("http://www.setgame.com/puzzle/set.htm"));
 	}
 		
 	private void generatePuzzle(Random rand){
@@ -100,6 +121,31 @@ public class SetPuzzlePanel extends SetPanel {
 	}
 		
 	public void specStart() {
+		
+		switch(type){
+		case RANDOM:
+			generateRandom();
+			break;
+		case OFFICIAL:
+			if(!grabDailyPuzzle()){
+				message.setText("Unable to acquire Daily Puzzle. Please check your internet connection.");
+				return;
+			}
+			break;
+		case MY_DAILY:
+			generateDaily();
+			break;
+		case ARCHIVES:
+			URL target = createURL("http://stanford.edu/~jachen2/setpuzzle/" + dailyPuzzleArchivesDate + ".htm");
+			if(!grabDailyPuzzle(target)) {
+				message.setText("Unable to acquire Daily Puzzle for " + dailyPuzzleArchivesDate + "."); 
+				// "Possible causes: the requested puzzle is not in the archives, the date is invalid, or your internet connection is not working."
+				return;
+			}
+			eastPanel.add(new EastLabel(dailyPuzzleArchivesDate));
+			break;
+		}
+
 		eastPanel.add(pause);
 		
 		setsLeft = new EastLabel("Sets Left: " + TOTAL_SETS);
@@ -108,21 +154,6 @@ public class SetPuzzlePanel extends SetPanel {
 		eastPanel.add(timeLabel);
 		eastPanel.add(new EastLabel("Found So Far:"));
 		
-		switch(type){
-		case RANDOM:
-			generateRandom();
-			break;
-		case OFFICIAL:
-			if(!grabDailyPuzzle()){
-				message.setText("Unable to acquire Daily Puzzle: Please Check your Internet Connection.");
-				return;
-			}
-			break;
-		case MY_DAILY:
-			generateDaily();
-			break;
-		}
-
 		layoutStartingCards();
 		timer.start();
 	}
@@ -155,7 +186,7 @@ public class SetPuzzlePanel extends SetPanel {
 			}
 		}
 		else{
-			message.setText("You fail.  That is not a set.");
+			message.setText("You fail. That is not a set.");
 		}
 	}
 	
@@ -178,4 +209,5 @@ public class SetPuzzlePanel extends SetPanel {
 	ArrayList<SetCardList> foundSets = new ArrayList<SetCardList>();
 	JLabel setsLeft;
 	int type;
+	String dailyPuzzleArchivesDate;
 }

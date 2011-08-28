@@ -23,11 +23,14 @@ public class MenuPanel extends JPanel implements ActionListener, KeyListener {
 		genPuzzle = new MenuButton("Puzzle Mode", buttons.size());
 		buttons.add(genPuzzle);
 		
-		dailyPuzzle = new MenuButton("Play Official Set Daily Puzzle", buttons.size());
+		dailyPuzzle = new MenuButton("Official Set Daily Puzzle", buttons.size());
 		buttons.add(dailyPuzzle);
 		
-		myPuzzle = new MenuButton("Play Special Set Daily Puzzle", buttons.size());
+		myPuzzle = new MenuButton("Special Set Daily Puzzle", buttons.size());
 		buttons.add(myPuzzle);
+		
+		dailyPuzzleArchives = new MenuButton("Set Daily Puzzle Archives", buttons.size());
+		buttons.add(dailyPuzzleArchives);
 		
 		for(MenuButton mb : buttons){
 			add(Box.createRigidArea(new Dimension(0, GAP)));
@@ -49,6 +52,9 @@ public class MenuPanel extends JPanel implements ActionListener, KeyListener {
 		else if(e.getSource() == myPuzzle){
 			parent.runGame(new SetPuzzlePanel(parent, SetPuzzlePanel.MY_DAILY));
 		}
+		else if(e.getSource() == dailyPuzzleArchives){
+			parent.setMainPanel(new DailyPuzzleArchivesPanel(parent));
+		}
 	}
 
 	public void keyPressed(KeyEvent e) {}
@@ -60,7 +66,7 @@ public class MenuPanel extends JPanel implements ActionListener, KeyListener {
 		buttons.get(buttonIndex).doClick();
 	}
 	
-	MenuButton classic, dailyPuzzle, genPuzzle, myPuzzle;
+	MenuButton classic, dailyPuzzle, genPuzzle, myPuzzle, dailyPuzzleArchives;
 	ArrayList<MenuButton> buttons = new ArrayList<MenuButton>();
 	SetGame parent;
 }

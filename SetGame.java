@@ -15,7 +15,7 @@ public class SetGame extends JApplet {
 	public static final int CARD_MARGIN = 7;
 	public static final int EAST_WIDTH = 200, NORTH_HEIGHT = 75, SOUTH_HEIGHT = 50;
 	public static final String FONT = "Comic Sans";
-	public static final String VERSION = "3.1.2";
+	public static final String VERSION = "4.0";
 	public static final Color BACKGROUND = new Color(200, 100, 200);
 	public static final Dimension RIGID_DIM = new Dimension(0, 30);
 	
@@ -42,24 +42,18 @@ public class SetGame extends JApplet {
 		title.setPreferredSize(new Dimension(getWidth(), NORTH_HEIGHT));
 		add(title, BorderLayout.NORTH);
 		menu = new MenuPanel(this);
-		add(menu);
+		setMainPanel(menu);
 	}
 	
-	public void runGame(SetPanel g){
-		game = g;
-		remove(menu);
-		add(game);
-		validate();
-		repaint();
+	public void runGame(SetPanel game){
+		setMainPanel(game);
 		game.start();
 	}
 	
 	public void endGame(TimerListener tl, ArrayList<Component> comps){
 		int secs = tl.getSeconds();
 		
-		remove(game);
-		
-		congrats = new JPanel();
+		JPanel congrats = new JPanel();
 		congrats.setLayout(new BoxLayout(congrats, BoxLayout.Y_AXIS));
 		
 		
@@ -88,28 +82,36 @@ public class SetGame extends JApplet {
 		congrats.add(Box.createRigidArea(RIGID_DIM));
 		
 		congrats.addKeyListener(col);
-		add(congrats);		
-		validate();
-		repaint();
-		congrats.requestFocusInWindow();
+
+		setMainPanel(congrats);
 	}
-	
+
 	public void start(){
 		menu.setFocusable(true);
 		menu.requestFocusInWindow();
 	}
 	
 	MenuPanel menu;
-	JPanel congrats;
-	SetPanel game;
-	
-	private class ContinueListener implements ActionListener, KeyListener{
-		public void actionPerformed(ActionEvent e){
-			remove(congrats);
-			add(menu);
+
+	JComponent mainPanel;
+
+	public void setMainPanel(JComponent newPanel)
+	{
+		if(mainPanel != null)
+			remove(mainPanel);
+		add(newPanel);
+		if(mainPanel != null)
+		{
 			validate();
 			repaint();
-			menu.requestFocusInWindow();
+		}
+		newPanel.requestFocusInWindow();
+		mainPanel = newPanel;
+	}
+
+	private class ContinueListener implements ActionListener, KeyListener{
+		public void actionPerformed(ActionEvent e){
+			setMainPanel(menu);
 		}
 
 		public void keyPressed(KeyEvent arg0) {}
