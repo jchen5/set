@@ -37,6 +37,9 @@ public class MenuPanel extends JPanel implements ActionListener, KeyListener {
 			mb.addActionListener(this);
 			add(mb);
 		}
+
+		add(Box.createVerticalGlue());
+		add(new GenericLabel("Version " + SetGame.VERSION, 16));
 	}
 
 	public void actionPerformed(ActionEvent e) {

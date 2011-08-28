@@ -15,7 +15,8 @@ public class SetGame extends JApplet {
 	public static final int CARD_MARGIN = 7;
 	public static final int EAST_WIDTH = 200, NORTH_HEIGHT = 75, SOUTH_HEIGHT = 50;
 	public static final String FONT = "Comic Sans";
-	public static final String VERSION = "4.0";
+	public static final int DEFAULT_FONT_SIZE = 20;
+	public static final String VERSION = "4.1.0";
 	public static final Color BACKGROUND = new Color(200, 100, 200);
 	public static final Dimension RIGID_DIM = new Dimension(0, 30);
 	
@@ -37,10 +38,11 @@ public class SetGame extends JApplet {
 		setLayout(new BorderLayout());
 		setFocusable(false);
 		
-		JLabel title = new JLabel("Set v. " + VERSION, SwingConstants.CENTER);
+		JLabel title = new JLabel("SET", SwingConstants.CENTER);
 		title.setFont(new Font(FONT, Font.BOLD, 42));
 		title.setPreferredSize(new Dimension(getWidth(), NORTH_HEIGHT));
 		add(title, BorderLayout.NORTH);
+		
 		menu = new MenuPanel(this);
 		setMainPanel(menu);
 	}

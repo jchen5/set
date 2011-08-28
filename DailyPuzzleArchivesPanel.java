@@ -27,8 +27,9 @@ public class DailyPuzzleArchivesPanel extends JPanel implements ActionListener
 		}
 		
 		date = new JFormattedTextField(dateFormatter);
-		date.setFont(new Font(SetGame.FONT, Font.PLAIN, 20));
-		date.setColumns(10);
+		date.setFont(new Font("monospaced", Font.PLAIN, SetGame.DEFAULT_FONT_SIZE));
+		date.setHorizontalAlignment(SwingConstants.CENTER);
+		date.setColumns(11);
 		date.setMaximumSize(date.getPreferredSize());
 
 		MenuButton continueButton = new MenuButton("Play");

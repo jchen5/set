@@ -1,3 +1,4 @@
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.io.BufferedReader;
@@ -7,18 +8,21 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.TimeZone;
-
+import java.util.regex.*;
 import javax.swing.*;
+import java.text.*;
 
 public class SetPuzzlePanel extends SetPanel {
 	public static final int TOTAL_SETS = 6;
 	public static final int TOTAL_CARDS = 12;
 	public static final int RANDOM = 0, OFFICIAL = 1, MY_DAILY = 2, ARCHIVES = 3;
-	public static final String flag = "initSetCards";
+	public static final String dailyPuzzleCardsFlag = "initSetCards";
+	public static final Pattern dailyPuzzleDatePattern = Pattern.compile("^<br /><font size=\"2\">([a-zA-Z0-9 ,]+)</font>$");
 	
 	public SetPuzzlePanel(SetGame parent, int type){
 		super(parent);
@@ -30,23 +34,35 @@ public class SetPuzzlePanel extends SetPanel {
 	}
 
 	private boolean grabDailyPuzzle(URL site){
+		cards = null;
+		curDailyPuzzleDate = null;
+		
 		try {
 			URLConnection conn = site.openConnection();
 			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 			String line;
-			while((line = br.readLine()) != null){
-				cards = new ArrayList<SetCard>();
-				if(line.contains(flag)){
-					Scanner s = new Scanner(line);
-					s.useDelimiter("[, (]++");
-					s.skip(".*" + flag);
-					for(int i = 0; i < 12; ++i){
-						int nextCard = s.nextInt() - 1;
-						cards.add(new SetCard(nextCard, cl));
+			
+			while(((line = br.readLine()) != null) && (cards == null || curDailyPuzzleDate == null)) {
+				if(cards == null) {
+					if(line.contains(dailyPuzzleCardsFlag)) {
+						cards = new ArrayList<SetCard>();
+						Scanner s = new Scanner(line);
+						s.useDelimiter("[, (]++");
+						s.skip(".*" + dailyPuzzleCardsFlag);
+						for(int i = 0; i < 12; ++i){
+							int nextCard = s.nextInt() - 1;
+							cards.add(new SetCard(nextCard, cl));
+						}
 					}
-					return true;
+				}
+				if(curDailyPuzzleDate == null) {
+					Matcher matcher = dailyPuzzleDatePattern.matcher(line);
+					if(matcher.find()) {
+						curDailyPuzzleDate = matcher.group(1);
+					}
 				}
 			}
+			return (cards != null);
 		}
 		catch (java.io.IOException ex) {
 			System.err.println("Error downloading Daily Puzzle: " + ex);
@@ -121,7 +137,6 @@ public class SetPuzzlePanel extends SetPanel {
 	}
 		
 	public void specStart() {
-		
 		switch(type){
 		case RANDOM:
 			generateRandom();
@@ -142,10 +157,26 @@ public class SetPuzzlePanel extends SetPanel {
 				// "Possible causes: the requested puzzle is not in the archives, the date is invalid, or your internet connection is not working."
 				return;
 			}
-			eastPanel.add(new EastLabel(dailyPuzzleArchivesDate));
 			break;
 		}
 
+		if(type == OFFICIAL || type == ARCHIVES)
+		{
+			String dateText = "Date unavailable";
+			if(curDailyPuzzleDate != null)
+			{
+				try {
+					Date date = new SimpleDateFormat("EEEE, MMMM d, yyyy").parse(curDailyPuzzleDate);
+					dateText = new SimpleDateFormat("EEE, MMM d, yyyy").format(date);
+				}
+				catch(ParseException ex) {
+					System.err.println("Error parsing Daily Puzzle date from input string: " + curDailyPuzzleDate);
+				
+				}
+			}
+			eastPanel.add(new EastLabel(dateText));
+		}
+		
 		eastPanel.add(pause);
 		
 		setsLeft = new EastLabel("Sets Left: " + TOTAL_SETS);
@@ -210,4 +241,5 @@ public class SetPuzzlePanel extends SetPanel {
 	JLabel setsLeft;
 	int type;
 	String dailyPuzzleArchivesDate;
+	String curDailyPuzzleDate;
 }
