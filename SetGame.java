@@ -16,7 +16,7 @@ public class SetGame extends JApplet {
 	public static final int EAST_WIDTH = 200, NORTH_HEIGHT = 75, SOUTH_HEIGHT = 50;
 	public static final String FONT = "Comic Sans";
 	public static final int DEFAULT_FONT_SIZE = 20;
-	public static final String VERSION = "4.1.0";
+	public static final String VERSION = "4.2.0";
 	public static final Color BACKGROUND = new Color(200, 100, 200);
 	public static final Dimension RIGID_DIM = new Dimension(0, 30);
 	

@@ -67,6 +67,9 @@ public class SetPuzzlePanel extends SetPanel {
 		catch (java.io.IOException ex) {
 			System.err.println("Error downloading Daily Puzzle: " + ex);
 		}
+		catch (java.security.AccessControlException ex) {
+			System.err.println("Error downloading Daily Puzzle: " + ex);
+		}
 		return false;
 	}
 
@@ -84,7 +87,8 @@ public class SetPuzzlePanel extends SetPanel {
 	}
 	
 	private boolean grabDailyPuzzle(){
-		return grabDailyPuzzle(createURL("http://www.setgame.com/puzzle/set.htm"));
+		return grabDailyPuzzle(createURL("http://www.setgame.com/puzzle/set.htm")) ||
+			grabDailyPuzzle(createURL("http://stanford.edu/~jachen2/setpuzzle/current.htm"));
 	}
 		
 	private void generatePuzzle(Random rand){
