@@ -211,9 +211,7 @@ public class SetPuzzlePanel extends SetPanel {
 				setsLeft.setText("Sets Left: " + (TOTAL_SETS - foundSets.size()));
 				showFound(selected);
 				if(foundSets.size() == TOTAL_SETS){
-					timer.stop();
-					parent.endGame(tl, null);
-					//end game
+					endGame();	
 				}
 				else{
 					message.setText("Set!");
@@ -223,6 +221,39 @@ public class SetPuzzlePanel extends SetPanel {
 		else{
 			message.setText("You fail. That is not a set.");
 		}
+	}
+
+	private void endGame()
+	{
+		timer.stop();
+
+		StringBuilder s = new StringBuilder();
+		switch(type)
+		{
+		case RANDOM:
+			s.append("Random Puzzle");
+			break;
+		case OFFICIAL:
+		case ARCHIVES:
+			s.append("Set Daily Puzzle (" + curDailyPuzzleDate + ")");
+			break;
+		case MY_DAILY:
+			s.append("Special Set Daily Puzzle");
+			break;
+		}
+					
+		s.append("; time: " + tl.getSeconds());
+					
+		s.append("; cards: ");
+		for(int i = 0; i < TOTAL_CARDS; ++i) {
+			if(i > 0)
+				s.append(", ");
+			s.append((cards.get(i).getMod() + 1));
+		}
+					
+		parent.logGame(s.toString());
+					
+		parent.endGame(tl, null);
 	}
 	
 	private class FoundPanel extends JPanel{

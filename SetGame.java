@@ -8,7 +8,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
-
+import java.util.Date;
+import java.io.*;
 import javax.swing.*;
 
 public class SetGame extends JApplet {
@@ -16,14 +17,17 @@ public class SetGame extends JApplet {
 	public static final int EAST_WIDTH = 200, NORTH_HEIGHT = 75, SOUTH_HEIGHT = 50;
 	public static final String FONT = "Comic Sans";
 	public static final int DEFAULT_FONT_SIZE = 20;
-	public static final String VERSION = "4.2.0";
+	public static final String VERSION = "4.3.0";
 	public static final Color BACKGROUND = new Color(200, 100, 200);
 	public static final Dimension RIGID_DIM = new Dimension(0, 30);
+	public static final String LOG_FILE = "SetGame.log";
+	public boolean logToFile = false;
 	
 	public static void main(String[] args){
 		SetGame s = new SetGame();
         JFrame window = new JFrame("Productivity Destroyer " + VERSION);
         s.init();
+		s.logToFile = true;				// enable logging when not run as applet
         window.setContentPane(s);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.pack();              // Arrange the components.
@@ -111,6 +115,30 @@ public class SetGame extends JApplet {
 		mainPanel = newPanel;
 	}
 
+	public void logGame(String logEntry)
+	{
+		Date date = new Date();
+		String logLine = date + ": " + logEntry;
+		System.out.println(logLine);
+		if(logToFile)
+		{
+			try {
+				PrintWriter file = new PrintWriter(new BufferedWriter(
+						new FileWriter(LOG_FILE, true))); // append to file
+				file.println(logLine);
+				file.close();
+			}
+			catch (IOException ex) {
+				System.err.println("Error writing set game log entry: " + ex);
+				System.err.println("Log entry: " + logEntry);
+			}
+			catch (java.security.AccessControlException ex) {
+				System.err.println("Error writing set game log entry: " + ex);
+				System.err.println("Log entry: " + logEntry);
+			}
+		}
+	}
+
 	private class ContinueListener implements ActionListener, KeyListener{
 		public void actionPerformed(ActionEvent e){
 			setMainPanel(menu);
@@ -123,4 +151,6 @@ public class SetGame extends JApplet {
 			actionPerformed(null);
 		}
 	}
+
+	
 }
