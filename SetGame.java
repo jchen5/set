@@ -17,7 +17,7 @@ public class SetGame extends JApplet {
 	public static final int EAST_WIDTH = 200, NORTH_HEIGHT = 75, SOUTH_HEIGHT = 50;
 	public static final String FONT = "Comic Sans";
 	public static final int DEFAULT_FONT_SIZE = 20;
-	public static final String VERSION = "4.3.0";
+	public static final String VERSION = "4.4.0";
 	public static final Color BACKGROUND = new Color(200, 100, 200);
 	public static final Dimension RIGID_DIM = new Dimension(0, 30);
 	public static final String LOG_FILE = "SetGame.log";
@@ -48,6 +48,23 @@ public class SetGame extends JApplet {
 		add(title, BorderLayout.NORTH);
 		
 		menu = new MenuPanel(this);
+
+		backToMenu = new MenuButton("Back to Main Menu");
+		continueListener = new ContinueListener();
+		backToMenu.addActionListener(continueListener);
+
+		bottombar = Box.createVerticalBox();
+		
+		Box horBox = Box.createHorizontalBox();
+		horBox.add(Box.createHorizontalGlue());
+		horBox.add(backToMenu);
+		horBox.add(Box.createHorizontalGlue());
+
+		bottombar.add(horBox);
+		bottombar.add(Box.createRigidArea(new Dimension(0, 10)));
+		
+		add(bottombar, BorderLayout.SOUTH);
+		
 		setMainPanel(menu);
 	}
 	
@@ -78,16 +95,7 @@ public class SetGame extends JApplet {
 		
 		congrats.add(new CongratsLabel("Press any key or click below to continue."));
 		
-		congrats.add(Box.createVerticalGlue());
-		
-		ContinueListener col = new ContinueListener();
-		MenuButton continueOn = new MenuButton("Back to Menu");
-		continueOn.addActionListener(col);
-		congrats.add(continueOn);
-		
-		congrats.add(Box.createRigidArea(RIGID_DIM));
-		
-		congrats.addKeyListener(col);
+		congrats.addKeyListener(continueListener);
 
 		setMainPanel(congrats);
 	}
@@ -98,6 +106,9 @@ public class SetGame extends JApplet {
 	}
 	
 	MenuPanel menu;
+	MenuButton backToMenu;
+	JComponent bottombar;
+	ContinueListener continueListener;
 
 	JComponent mainPanel;
 
@@ -106,6 +117,7 @@ public class SetGame extends JApplet {
 		if(mainPanel != null)
 			remove(mainPanel);
 		add(newPanel);
+		backToMenu.setVisible(newPanel != menu);
 		if(mainPanel != null)
 		{
 			validate();
