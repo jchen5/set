@@ -17,7 +17,7 @@ public class SetGame extends JApplet {
 	public static final int EAST_WIDTH = 200, NORTH_HEIGHT = 75, SOUTH_HEIGHT = 50;
 	public static final String FONT = "Comic Sans";
 	public static final int DEFAULT_FONT_SIZE = 20;
-	public static final String VERSION = "4.4.0";
+	public static final String VERSION = "4.5.0";
 	public static final Color BACKGROUND = new Color(200, 100, 200);
 	public static final Dimension RIGID_DIM = new Dimension(0, 30);
 	public static final String LOG_FILE = "SetGame.log";
@@ -50,7 +50,7 @@ public class SetGame extends JApplet {
 		menu = new MenuPanel(this);
 
 		backToMenu = new MenuButton("Back to Main Menu");
-		continueListener = new ContinueListener();
+		continueListener = new ContinueListener(this);
 		backToMenu.addActionListener(continueListener);
 
 		bottombar = Box.createVerticalBox();
@@ -98,6 +98,8 @@ public class SetGame extends JApplet {
 		congrats.addKeyListener(continueListener);
 
 		setMainPanel(congrats);
+		
+		continueListener.setConfirm(false);
 	}
 
 	public void start(){
@@ -118,6 +120,7 @@ public class SetGame extends JApplet {
 			remove(mainPanel);
 		add(newPanel);
 		backToMenu.setVisible(newPanel != menu);
+		continueListener.setConfirm(true);
 		if(mainPanel != null)
 		{
 			validate();
@@ -152,7 +155,27 @@ public class SetGame extends JApplet {
 	}
 
 	private class ContinueListener implements ActionListener, KeyListener{
+		SetGame parent;
+		boolean confirm;
+
+		public ContinueListener(SetGame parent) {
+			super();
+			this.parent = parent;
+			confirm = true;
+		}
+
+		public void setConfirm(boolean confirm) {
+			this.confirm = confirm;
+		}
+		
 		public void actionPerformed(ActionEvent e){
+			if(confirm)
+			{
+				String msg = "Return to the main menu?";
+				int choice = JOptionPane.showConfirmDialog(parent, msg, msg, JOptionPane.OK_CANCEL_OPTION);
+				if(choice != JOptionPane.OK_OPTION)
+					return;
+			}
 			setMainPanel(menu);
 		}
 
