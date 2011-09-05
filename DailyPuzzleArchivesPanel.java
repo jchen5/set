@@ -40,6 +40,8 @@ public class DailyPuzzleArchivesPanel extends JPanel implements ActionListener
 		add(new GenericLabel("Enter date (YYYY-MM-DD)"));
 		add(Box.createRigidArea(new Dimension(0, 20)));
 		add(date);
+		add(Box.createRigidArea(SetGame.RIGID_DIM));
+		add(new GenericLabel("Set Daily Puzzles starting from 2011-08-25 are available", 18));
 		add(Box.createVerticalGlue());
 		add(continueButton);
 		add(Box.createRigidArea(SetGame.RIGID_DIM));
