@@ -190,6 +190,7 @@ public class SetPuzzlePanel extends SetPanel {
 		eastPanel.add(new EastLabel("Found So Far:"));
 		
 		layoutStartingCards();
+		
 		timer.start();
 	}
 
@@ -242,8 +243,8 @@ public class SetPuzzlePanel extends SetPanel {
 			break;
 		}
 					
-		s.append("; time: " + tl.getSeconds());
-					
+		s.append("; time: " + tl.getTime());
+		
 		s.append("; cards: ");
 		for(int i = 0; i < TOTAL_CARDS; ++i) {
 			if(i > 0)

@@ -42,7 +42,6 @@ public abstract class SetPanel extends JPanel implements ActionListener{
 		
 		tl = new TimerListener(timeLabel);
 		timer = new Timer(TimerListener.TIMER_DELAY, tl);
-		timer.setInitialDelay(0);
 		//timer not started: wait until game fully ready to begin
 	}
 	

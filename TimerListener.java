@@ -5,20 +5,25 @@ import javax.swing.JLabel;
 	public class TimerListener implements ActionListener{
 		public static final int TIMER_DELAY = 100;
 		
-		public TimerListener(JLabel lab){
-			this.lab = lab;
+		public TimerListener(JLabel label){
+			this.label = label;
+			setLabelText();
 		}
 		
 		public void reset(){
 			time = -1;
 		}
 		
-		public int getTime(){
+		public int getTicks(){
 			return time;
 		}
 		
 		public int getSeconds(){
 			return time * TIMER_DELAY / 1000;
+		}
+
+		public double getTime(){
+			return time * TIMER_DELAY / 1000.0;
 		}
 		
 		public static String makeTimeString(int secs){
@@ -29,15 +34,22 @@ import javax.swing.JLabel;
 			return makeTimeString(getSeconds());
 		}
 		
-		public String congrats(){
-			return ("Congratulations!\nYou finished in " + getTimeString() + "\n(" + getSeconds() + " seconds)!");
+		public String getSecondsString(){
+			if(getTime() < 20)
+				return getTime() + " seconds";
+			else
+				return getSeconds() + " seconds";
 		}
 		
 		public void actionPerformed(ActionEvent e){
 			++time;
-			lab.setText("Time Elapsed: " + getTimeString());
+			setLabelText();
+		}
+
+		public void setLabelText(){
+			label.setText("Time Elapsed: " + getTimeString());
 		}
 		
-		JLabel lab;
-		int time = -1;
+		JLabel label;
+		int time = 0;
 	}

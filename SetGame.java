@@ -17,7 +17,7 @@ public class SetGame extends JApplet {
 	public static final int EAST_WIDTH = 200, NORTH_HEIGHT = 75, SOUTH_HEIGHT = 50;
 	public static final String FONT = "Comic Sans";
 	public static final int DEFAULT_FONT_SIZE = 20;
-	public static final String VERSION = "4.5.1";
+	public static final String VERSION = "4.6.0";
 	public static final Color BACKGROUND = new Color(200, 100, 200);
 	public static final Dimension RIGID_DIM = new Dimension(0, 30);
 	public static final String LOG_FILE = "SetGame.log";
@@ -74,15 +74,13 @@ public class SetGame extends JApplet {
 	}
 	
 	public void endGame(TimerListener tl, ArrayList<Component> comps){
-		int secs = tl.getSeconds();
-		
 		JPanel congrats = new JPanel();
 		congrats.setLayout(new BoxLayout(congrats, BoxLayout.Y_AXIS));
 		
 		
 		congrats.add(new CongratsLabel("Congratulations!"));
-		congrats.add(new CongratsLabel("You finished in " + TimerListener.makeTimeString(secs)));
-		congrats.add(new CongratsLabel("(" + secs + " seconds)."));
+		congrats.add(new CongratsLabel("You finished in " + tl.getTimeString()));
+		congrats.add(new CongratsLabel("(" + tl.getSecondsString() + ")."));
 		
 		congrats.add(Box.createRigidArea(RIGID_DIM));
 		
