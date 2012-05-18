@@ -37,7 +37,7 @@ public class SetClassicPanel extends SetPanel{
 		for(int i = 0; i < 14; ++i){
 			deck.add(new SetCard(0, cl));
 		}
-		deck.add(new SetCard(1, cl));	
+		deck.add(new SetCard(1, cl));
 	}
 	
 	public void specStart(){
@@ -47,6 +47,11 @@ public class SetClassicPanel extends SetPanel{
 		Collections.shuffle(deck);
 		lastCard = deck.get(0);
 		lastCard.setFlipped(true);
+
+		originalDeck = new ArrayList<SetCard>();
+		for(int i = deck.size() - 1; i >= 0; --i)
+			originalDeck.add(deck.get(i));
+		
 		layStartingCards();
 		
 		addCards = new JButton("Can I Haz Cards? (" + (char)(CardListener.MORE_CARDS - 'a' + 'A') + ")");
@@ -86,6 +91,22 @@ public class SetClassicPanel extends SetPanel{
 	
 	
 	private void endGame(){		
+		timer.stop();
+
+		StringBuilder s = new StringBuilder();
+		s.append("Classic Game");
+					
+		s.append("; time: " + tl.getTime());
+		
+		s.append("; cards: ");
+		for(int i = 0; i < originalDeck.size(); ++i) {
+			if(i > 0)
+				s.append(", ");
+			s.append((originalDeck.get(i).getMod() + 1));
+		}
+					
+		parent.logGame(s.toString());
+		
 		if(Arrays.asList(gp.getComponents()).contains(lastCard)){
 			ArrayList<Component> comps = new ArrayList<Component>();
 			comps.add(new CongratsLabel("The Turned-Over Card Was:"));
@@ -169,6 +190,7 @@ public class SetClassicPanel extends SetPanel{
 	}
 	
 	Stack<SetCard> deck = new Stack<SetCard>();
+	ArrayList<SetCard> originalDeck;
 	//Stack<SetCard> savedCards = new Stack<SetCard>();
 	SetCard lastCard;
 	SetCardList selected = new SetCardList();
