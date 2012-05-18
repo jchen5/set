@@ -98,6 +98,8 @@ public class SetClassicPanel extends SetPanel{
 					
 		s.append("; time: " + tl.getTime());
 		
+		s.append("; failed add cards: " + numFailedAddCards);
+		
 		s.append("; cards: ");
 		for(int i = 0; i < originalDeck.size(); ++i) {
 			if(i > 0)
@@ -106,19 +108,19 @@ public class SetClassicPanel extends SetPanel{
 		}
 					
 		parent.logGame(s.toString());
+
+		ArrayList<Component> comps = new ArrayList<Component>();
+		comps.add(new CongratsLabel("Number of incorrect attempts to add cards: " + numFailedAddCards));
 		
 		if(Arrays.asList(gp.getComponents()).contains(lastCard)){
-			ArrayList<Component> comps = new ArrayList<Component>();
-			comps.add(new CongratsLabel("The Turned-Over Card Was:"));
+			comps.add(Box.createRigidArea(SetGame.RIGID_DIM));
+			comps.add(new CongratsLabel("The turned-over card was:"));
 			comps.add(Box.createRigidArea(new Dimension(0, 10)));
 			JLabel lastCardLabel = new JLabel(lastCard.icon);
 			lastCardLabel.setAlignmentX(CENTER_ALIGNMENT);
 			comps.add(lastCardLabel);
-			parent.endGame(tl, comps);
 		}
-		else{
-			parent.endGame(tl, null);
-		}
+		parent.endGame(tl, comps);
 	}
 	
 	private void updateNumCards(){
@@ -166,6 +168,7 @@ public class SetClassicPanel extends SetPanel{
 			if(deck.empty()){
 				//Assume text was reset to "No more Sets"
 				if(gp.hasSet()){
+					numFailedAddCards++;
 					message.setText("You fail. There's still a set here.");
 				}
 				else{
@@ -174,6 +177,7 @@ public class SetClassicPanel extends SetPanel{
 				return;
 			}
 			if(gp.hasSet()){
+				numFailedAddCards++;
 				message.setText("You fail.  There's still a set here.");
 				return;
 			}
@@ -196,4 +200,5 @@ public class SetClassicPanel extends SetPanel{
 	SetCardList selected = new SetCardList();
 	JButton addCards;
 	JLabel cardsLeft;
+	int numFailedAddCards = 0;
 }
