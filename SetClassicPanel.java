@@ -110,7 +110,7 @@ public class SetClassicPanel extends SetPanel{
 		parent.logGame(s.toString());
 
 		ArrayList<Component> comps = new ArrayList<Component>();
-		comps.add(new CongratsLabel("Number of incorrect attempts to add cards: " + numFailedAddCards));
+		comps.add(new CongratsLabel("Incorrect attempts to add cards: " + numFailedAddCards));
 		
 		if(Arrays.asList(gp.getComponents()).contains(lastCard)){
 			comps.add(Box.createRigidArea(SetGame.RIGID_DIM));
