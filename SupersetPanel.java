@@ -65,8 +65,6 @@ public class SupersetPanel extends SetPanel {
 		//loadTestingDeck();
 
 		Collections.shuffle(deck);
-		lastCard = deck.get(0);
-		lastCard.setFlipped(true);
 
 		originalDeck = new ArrayList<SetCard>();
 		for(int i = deck.size() - 1; i >= 0; --i)
@@ -114,7 +112,7 @@ public class SupersetPanel extends SetPanel {
 		timer.stop();
 
 		StringBuilder s = new StringBuilder();
-		s.append("Classic Game");
+		s.append("Superset Game");
 
 		s.append("; time: " + tl.getTime());
 
@@ -133,14 +131,6 @@ public class SupersetPanel extends SetPanel {
 		comps.add(new CongratsLabel("You incorrectly claimed there"));
 		comps.add(new CongratsLabel("were no supersets " + numFailedAddCards + " " + (numFailedAddCards == 1 ? "time" : "times") + "."));
 
-		if(Arrays.asList(gp.getComponents()).contains(lastCard)){
-			comps.add(Box.createRigidArea(SetGame.RIGID_DIM));
-			comps.add(new CongratsLabel("The turned-over card was:"));
-			comps.add(Box.createRigidArea(new Dimension(0, 10)));
-			JLabel lastCardLabel = new JLabel(lastCard.icon);
-			lastCardLabel.setAlignmentX(CENTER_ALIGNMENT);
-			comps.add(lastCardLabel);
-		}
 		parent.endGame(tl, comps);
 	}
 
@@ -229,7 +219,6 @@ public class SupersetPanel extends SetPanel {
 	Stack<SetCard> deck = new Stack<SetCard>();
 	ArrayList<SetCard> originalDeck;
 	//Stack<SetCard> savedCards = new Stack<SetCard>();
-	SetCard lastCard;
 	SetCardList selected = new SetCardList();
 	JButton addCards;
 	JLabel cardsLeft;
