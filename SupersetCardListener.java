@@ -25,7 +25,7 @@ public class SupersetCardListener extends CardListener implements KeyListener, A
 		if(e.getKeyChar() == PAUSE){
 			user.pause();
 		}
-		else if(e.getKeyChar() == MORE_CARDS && user.getClass().getSimpleName() == "SupersetPanel"){
+		else if(e.getKeyChar() == MORE_CARDS && user.getClass().getSimpleName().equals("SupersetPanel")){
 			((SupersetPanel)user).addCards.doClick();
 		}
 		else{
@@ -34,6 +34,4 @@ public class SupersetCardListener extends CardListener implements KeyListener, A
 			((SetCard)(user.gp.getComponent(buttonIndex))).doClick();
 		}
 	}
-	
-	SetCardList selected = new SetCardList();
 }

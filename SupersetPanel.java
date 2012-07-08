@@ -35,7 +35,9 @@ public class SupersetPanel extends SetPanel {
 
 	public SupersetPanel(SetGame parent){
 		super(parent);
+		removeKeyListener(cl);
 		cl = new SupersetCardListener(this);
+		addKeyListener(cl);
 	}
 
 	private void layStartingCards(){
