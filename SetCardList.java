@@ -32,13 +32,34 @@ public class SetCardList extends ArrayList<SetCard>{
 		return true;
 	}
 	
+	private static boolean isSuperSet(int a, int b, int c, int d)	{
+		for(int mask = 1; mask < 81; mask *= 3){
+			int x = (a/mask)+b/mask;
+			x %= 3;
+			int y = c/mask + d/mask;
+			y %= 3;
+			if(x != y)
+				return false;
+		}
+		return true;
+	}
+	
 	public static boolean isSet(SetCard one, SetCard two, SetCard three){
 		return isSet(one.getMod(), two.getMod(), three.getMod());
+	}
+	
+	public static boolean isSuperSet(SetCard one, SetCard two, SetCard three, SetCard four){
+		return isSuperSet(one.getMod(), two.getMod(), three.getMod(), four.getMod());
 	}
 	
 	public boolean isSet(){
 		if(size() != 3) return false;
 		return isSet(get(0), get(1), get(2));
+	}
+	
+	public boolean isSuperSet()	{
+		if(size() != 4) return false;
+		return isSuperSet(get(0), get(1), get(2), get(3));
 	}
 	
 	public boolean equals(Object o){

@@ -26,6 +26,9 @@ public class MenuPanel extends JPanel implements ActionListener, KeyListener {
 		dailyPuzzle = new MenuButton("Official Set Daily Puzzle", buttons.size());
 		buttons.add(dailyPuzzle);
 		
+		superset = new MenuButton("Superset Mode", buttons.size());
+		buttons.add(superset);
+		
 		myPuzzle = new MenuButton("Special Set Daily Puzzle", buttons.size());
 		buttons.add(myPuzzle);
 		
@@ -58,6 +61,9 @@ public class MenuPanel extends JPanel implements ActionListener, KeyListener {
 		else if(e.getSource() == dailyPuzzleArchives){
 			parent.setMainPanel(new DailyPuzzleArchivesPanel(parent));
 		}
+		else if(e.getSource() == superset)	{
+			parent.runGame(new SupersetPanel(parent));
+		}
 	}
 
 	public void keyPressed(KeyEvent e) {}
@@ -69,7 +75,7 @@ public class MenuPanel extends JPanel implements ActionListener, KeyListener {
 		buttons.get(buttonIndex).doClick();
 	}
 	
-	MenuButton classic, dailyPuzzle, genPuzzle, myPuzzle, dailyPuzzleArchives;
+	MenuButton classic, dailyPuzzle, genPuzzle, myPuzzle, dailyPuzzleArchives, superset;
 	ArrayList<MenuButton> buttons = new ArrayList<MenuButton>();
 	SetGame parent;
 }
