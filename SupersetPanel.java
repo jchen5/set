@@ -139,7 +139,7 @@ public class SupersetPanel extends SetPanel {
 	private void updateNumCards(){
 		cardsLeft.setText("Cards Left: " + deck.size());
 		if(deck.size() == 0){
-			addCards.setText("No more Superets (" + (char)(CardListener.MORE_CARDS - 'a' + 'A') + ")");
+			addCards.setText("No more Supersets (" + (char)(CardListener.MORE_CARDS - 'a' + 'A') + ")");
 		}
 	}
 
