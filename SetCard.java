@@ -21,7 +21,7 @@ public class SetCard extends JButton implements Comparable{
 	public static final Color BACK_COLOR = new Color(100, 0, 100);
 	
 	public SetCard(int card, ActionListener l){
-		this("/cards", card, l);
+		this("/cards/", card, l);
 	}
 	
 	public SetCard(String dir, int card, ActionListener l)	{
