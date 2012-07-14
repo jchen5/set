@@ -52,6 +52,22 @@ public class SetCardList extends ArrayList<SetCard>{
 		return isSuperSet(one.getMod(), two.getMod(), three.getMod(), four.getMod());
 	}
 	
+	public static boolean isProjectiveSet(SetCard one, SetCard two, SetCard three) {
+		if(!(one instanceof ProjectiveSetCard))
+			return false;
+		if(!(two instanceof ProjectiveSetCard))
+			return false;
+		if(!(three instanceof ProjectiveSetCard))
+			return false;
+		return (one.getMod() ^ two.getMod() ^ three.getMod()) == 0;
+	}
+	
+	public boolean isProjectiveSet()	{
+		if(size() != 3)
+			return false;
+		return isProjectiveSet(get(0), get(1), get(2));
+	}
+	
 	public boolean isSet(){
 		if(size() != 3) return false;
 		return isSet(get(0), get(1), get(2));

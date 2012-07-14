@@ -27,6 +27,10 @@ public class SetGamePanel extends JPanel {
 		return numSuperSets() != 0;
 	}
 	
+	public boolean hasProjectiveSet() {
+		return numProjectiveSets() != 0;
+	}
+	
 	public int numSuperSets()	{
 		int size = getComponentCount();
 		int numSets = 0;
@@ -44,6 +48,21 @@ public class SetGamePanel extends JPanel {
 		return numSets;
 	}
 
+	public int numProjectiveSets(){
+		int size = getComponentCount();
+		int numSets = 0;
+		for(int i = 0; i < size; ++i){
+			for(int j = 0; j < i; ++j){
+				for(int k = 0; k < j; ++k){
+					if(SetCardList.isProjectiveSet((SetCard)getComponent(i), (SetCard)getComponent(j), (SetCard)getComponent(k))) {
+						++numSets;
+					}
+				}
+			}
+		}
+		return numSets;
+	}
+	
 	public int numSets(){
 		int size = getComponentCount();
 		int numSets = 0;

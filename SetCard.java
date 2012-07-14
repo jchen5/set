@@ -21,7 +21,11 @@ public class SetCard extends JButton implements Comparable{
 	public static final Color BACK_COLOR = new Color(100, 0, 100);
 	
 	public SetCard(int card, ActionListener l){
-		String file = "/cards/" + String.format("%02d", card + 1) + ".gif";
+		this("/cards", card, l);
+	}
+	
+	public SetCard(String dir, int card, ActionListener l)	{
+		String file = dir + String.format("%02d", card + 1) + ".gif";
 		try {
 			//System.out.println(SetCard.class.getResourceAsStream(file));
 			//System.out.println(SetCard.class.getResourceAsStream("SetCard.class"));
@@ -94,9 +98,9 @@ public class SetCard extends JButton implements Comparable{
 		//as per suggestion, sorts by number, ignores other characteristics
 	}
 	
-	ImageIcon icon;
-	boolean flipped = false;
-	int modNumber;
-	boolean chosen = false;
-	char letter;
+	protected ImageIcon icon;
+	protected boolean flipped = false;
+	protected int modNumber;
+	protected boolean chosen = false;
+	protected char letter;
 }
