@@ -28,6 +28,9 @@ public class CardListener implements KeyListener, ActionListener {
 		else if(e.getKeyChar() == MORE_CARDS && user.getClass().getSimpleName() == "SetClassicPanel"){
 			((SetClassicPanel)user).addCards.doClick();
 		}
+		else if(e.getKeyChar() == MORE_CARDS && user.getClass().getSimpleName() == "ProjectiveSetPanel"){
+			((ProjectiveSetPanel)user).addCards.doClick();
+		}
 		else{
 			int buttonIndex = e.getKeyChar() - 'a';
 			if(buttonIndex < 0 || buttonIndex >= user.gp.getComponentCount()) return;
