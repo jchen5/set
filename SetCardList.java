@@ -62,6 +62,16 @@ public class SetCardList extends ArrayList<SetCard>{
 		return (one.getMod() ^ two.getMod() ^ three.getMod()) == 0;
 	}
 	
+	public boolean isProset() {
+		if(size() == 0)
+			return false;
+		int mask = 0;
+		for(int i = 0; i < size(); i++)	{
+			mask ^= get(i).modNumber;
+		}
+		return mask == 0;
+	}
+	
 	public boolean isProjectiveSet()	{
 		if(size() != 3)
 			return false;

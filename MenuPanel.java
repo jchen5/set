@@ -32,6 +32,9 @@ public class MenuPanel extends JPanel implements ActionListener, KeyListener {
 		projectiveSet = new MenuButton("Projective Set Mode", buttons.size());
 		buttons.add(projectiveSet);
 		
+		proSet = new MenuButton("Proset Mode", buttons.size());
+		buttons.add(proSet);
+		
 		myPuzzle = new MenuButton("Special Set Daily Puzzle", buttons.size());
 		buttons.add(myPuzzle);
 		
@@ -70,6 +73,9 @@ public class MenuPanel extends JPanel implements ActionListener, KeyListener {
 		else if(e.getSource() == projectiveSet)	{
 			parent.runGame(new ProjectiveSetPanel(parent));
 		}
+		else if(e.getSource() == proSet)	{
+			parent.runGame(new ProsetPanel(parent));
+		}
 	}
 
 	public void keyPressed(KeyEvent e) {}
@@ -81,7 +87,7 @@ public class MenuPanel extends JPanel implements ActionListener, KeyListener {
 		buttons.get(buttonIndex).doClick();
 	}
 	
-	MenuButton classic, dailyPuzzle, genPuzzle, myPuzzle, dailyPuzzleArchives, superset, projectiveSet;
+	MenuButton classic, dailyPuzzle, genPuzzle, myPuzzle, dailyPuzzleArchives, superset, projectiveSet, proSet;
 	ArrayList<MenuButton> buttons = new ArrayList<MenuButton>();
 	SetGame parent;
 }
