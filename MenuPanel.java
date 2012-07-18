@@ -4,90 +4,76 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JPanel;
+import javax.swing.*;
 
-public class MenuPanel extends JPanel implements ActionListener, KeyListener {
+public class MenuPanel extends JPanel implements ActionListener {
 	public static final int GAP = 20;
-	
-	public MenuPanel(SetGame parent){
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		addKeyListener(this);
-		
-		this.parent = parent;
-		
-		classic = new MenuButton("Classic Mode", buttons.size());
-		buttons.add(classic);
 
-		genPuzzle = new MenuButton("Puzzle Mode", buttons.size());
-		buttons.add(genPuzzle);
-		
-		dailyPuzzle = new MenuButton("Official Set Daily Puzzle", buttons.size());
-		buttons.add(dailyPuzzle);
-		
-		superset = new MenuButton("Superset Mode", buttons.size());
-		buttons.add(superset);
-		
-		projectiveSet = new MenuButton("Projective Set Mode", buttons.size());
-		buttons.add(projectiveSet);
-		
-		proSet = new MenuButton("Proset Mode", buttons.size());
-		buttons.add(proSet);
-		
-		myPuzzle = new MenuButton("Special Set Daily Puzzle", buttons.size());
-		buttons.add(myPuzzle);
-		
-		dailyPuzzleArchives = new MenuButton("Set Daily Puzzle Archives", buttons.size());
-		buttons.add(dailyPuzzleArchives);
-		
-		for(MenuButton mb : buttons){
-			add(Box.createRigidArea(new Dimension(0, GAP)));
-			mb.addActionListener(this);
-			add(mb);
-		}
+	private static final String NULL = "Pick A Mode";
+	private static final String CLASSIC = "Classic Mode";
+	private static final String PUZZLE = "Puzzle Mode";
+	private static final String OFFICIAL_DAILY = "Official Set Daily Puzzle";
+	private static final String SUPERSET = "Superset Mode";
+	private static final String PROJECTIVE = "Projective Set Mode";
+	private static final String PROSET = "Proset Mode";
+	private static final String SPECIAL_DAILY = "Special Set Daily Puzzle";
+	private static final String DAILY_ARCHIVE = "Set Daily Puzzle Archives";
+
+
+	private static String[] names = new String[]
+	                                           {NULL,
+		CLASSIC,
+		PUZZLE,
+		OFFICIAL_DAILY,
+		SUPERSET,
+		PROJECTIVE,
+		PROSET,
+		SPECIAL_DAILY,
+		DAILY_ARCHIVE};
+
+	public MenuPanel(SetGame parent){
+		comboBox = new JComboBox(names);
+		comboBox.setSelectedIndex(0);
+		comboBox.addActionListener(this);
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
+		this.parent = parent;
+
+		add(comboBox);
 
 		add(Box.createVerticalGlue());
 		add(new GenericLabel("Version " + SetGame.VERSION, 16));
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == classic){
+		JComboBox box = (JComboBox)e.getSource();
+		String name = (String)box.getSelectedItem();
+		if(name == CLASSIC){
 			parent.runGame(new SetClassicPanel(parent));
 		}
-		else if(e.getSource() == genPuzzle){
+		else if(name == PUZZLE){
 			parent.runGame(new SetPuzzlePanel(parent, SetPuzzlePanel.RANDOM));
 		}
-		else if(e.getSource() == dailyPuzzle){
+		else if(name == OFFICIAL_DAILY){
 			parent.runGame(new SetPuzzlePanel(parent, SetPuzzlePanel.OFFICIAL));
 		}
-		else if(e.getSource() == myPuzzle){
+		else if(name == SPECIAL_DAILY){
 			parent.runGame(new SetPuzzlePanel(parent, SetPuzzlePanel.MY_DAILY));
 		}
-		else if(e.getSource() == dailyPuzzleArchives){
+		else if(name == DAILY_ARCHIVE){
 			parent.setMainPanel(new DailyPuzzleArchivesPanel(parent));
 		}
-		else if(e.getSource() == superset)	{
+		else if(name == SUPERSET)	{
 			parent.runGame(new SupersetPanel(parent));
 		}
-		else if(e.getSource() == projectiveSet)	{
+		else if(name == PROJECTIVE)	{
 			parent.runGame(new ProjectiveSetPanel(parent));
 		}
-		else if(e.getSource() == proSet)	{
+		else if(name == PROSET)	{
 			parent.runGame(new ProsetPanel(parent));
 		}
 	}
 
-	public void keyPressed(KeyEvent e) {}
-	public void keyReleased(KeyEvent e) {}
-	
-	public void keyTyped(KeyEvent e) {
-		int buttonIndex = e.getKeyChar() - 'a';
-		if(buttonIndex < 0 || buttonIndex >= buttons.size()) return;
-		buttons.get(buttonIndex).doClick();
-	}
-	
-	MenuButton classic, dailyPuzzle, genPuzzle, myPuzzle, dailyPuzzleArchives, superset, projectiveSet, proSet;
-	ArrayList<MenuButton> buttons = new ArrayList<MenuButton>();
+	private JComboBox comboBox;
 	SetGame parent;
 }
