@@ -22,10 +22,12 @@ public class MenuPanel extends JPanel implements ActionListener, KeyListener {
 
 		genPuzzle = new MenuButton("Puzzle Mode", buttons.size());
 		buttons.add(genPuzzle);
-		
+
+		/* Set daily puzzle has changed, this doesn't work anymore.
 		dailyPuzzle = new MenuButton("Official Set Daily Puzzle", buttons.size());
 		buttons.add(dailyPuzzle);
-		
+		*/
+
 		superset = new MenuButton("Superset Mode", buttons.size());
 		buttons.add(superset);
 		
