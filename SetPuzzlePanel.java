@@ -155,7 +155,7 @@ public class SetPuzzlePanel extends SetPanel {
 			generateDaily();
 			break;
 		case ARCHIVES:
-			URL target = createURL("http://stanford.edu/~jachen2/setpuzzle/" + dailyPuzzleArchivesDate + ".htm");
+			URL target = createURL("https://jchen5.github.io/setpuzzle/" + dailyPuzzleArchivesDate + ".htm");
 			if(!grabDailyPuzzle(target)) {
 				message.setText("Unable to acquire Daily Puzzle for " + dailyPuzzleArchivesDate + "."); 
 				// "Possible causes: the requested puzzle is not in the archives, the date is invalid, or your internet connection is not working."
